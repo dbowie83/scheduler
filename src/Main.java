@@ -6,6 +6,13 @@ public class Main {
         }
         String apiToken = args[0];
         Scheduler scheduler = new Scheduler();
+
+        scheduler.start(apiToken);
         scheduler.getAppointments(apiToken);
+
+        scheduler.start(apiToken);
+        scheduler.getNextAppointment(apiToken);
+
+        scheduler.stop(apiToken);
     }
 }

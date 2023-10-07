@@ -6,15 +6,35 @@ import java.net.HttpURLConnection;
 
 
 public class Scheduler {
-    public void getAppointments(String token){
+
+    public void start(String token){
         try {
-            String endpoint = "http://scheduling-interview-2021-265534043.us-west-2.elb.amazonaws.com/api/Scheduling/Schedule?token=" + token;
+            String endpoint = "http://scheduling-interview-2021-265534043.us-west-2.elb.amazonaws.com/api/Scheduling/Start?token=" + token;
             URL url = new URL(endpoint);
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
-            http.setRequestMethod("GET");
+            http.setRequestMethod("POST");
             http.setDoOutput(false);
-//            http.setConnectTimeout(20000);
-//            http.setReadTimeout(20000);
+            http.connect();
+
+            if (http.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                System.out.println("Reset successfully");
+            }
+            else {
+                System.out.println("ERROR: " + http.getResponseMessage());
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void stop(String token){
+        try {
+            String endpoint = "http://scheduling-interview-2021-265534043.us-west-2.elb.amazonaws.com/api/Scheduling/Stop?token=" + token;
+            URL url = new URL(endpoint);
+            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+            http.setRequestMethod("POST");
+            http.setDoOutput(false);
             http.connect();
 
             String respData;
@@ -22,7 +42,6 @@ public class Scheduler {
                 InputStream respBody = http.getInputStream();
                 respData = readString(respBody);
 
-                // Display the JSON data returned from the server
                 System.out.println(respData);
             }
             else {
@@ -35,6 +54,66 @@ public class Scheduler {
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void getAppointments(String token){
+        try {
+            String endpoint = "http://scheduling-interview-2021-265534043.us-west-2.elb.amazonaws.com/api/Scheduling/Schedule?token=" + token;
+            URL url = new URL(endpoint);
+            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+            http.setRequestMethod("GET");
+            http.setDoOutput(false);
+            http.connect();
+
+            String respData;
+            if (http.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                InputStream respBody = http.getInputStream();
+                respData = readString(respBody);
+
+                System.out.println(respData);
+            }
+            else {
+                System.out.println("ERROR: " + http.getResponseMessage());
+                InputStream respBody = http.getErrorStream();
+                respData = readString(respBody);
+                System.out.println(respData);
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void getNextAppointment(String token){
+        try {
+            String endpoint = "http://scheduling-interview-2021-265534043.us-west-2.elb.amazonaws.com/api/Scheduling/AppointmentRequest?token=" + token;
+            URL url = new URL(endpoint);
+            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+            http.setRequestMethod("GET");
+            http.setDoOutput(false);
+            http.connect();
+
+            String respData;
+            if (http.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                InputStream respBody = http.getInputStream();
+                respData = readString(respBody);
+
+                System.out.println(respData);
+            }
+            else {
+                System.out.println("ERROR: " + http.getResponseMessage());
+                InputStream respBody = http.getErrorStream();
+                respData = readString(respBody);
+                System.out.println(respData);
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void scheduleAppointment(String token){
+        //fixme
     }
 
     private static String readString(InputStream is) throws IOException {
