@@ -13,6 +13,12 @@ public class Main {
         scheduler.start(apiToken);
         scheduler.getNextAppointment(apiToken);
 
+        scheduler.start(apiToken);
+        String dateString = "2021-11-14T18:48:27.203Z";
+            dateString = "2021-12-24T14:00:00";
+        AppointmentInfoRequest request = new AppointmentInfoRequest(1, 0, dateString, true, 0);
+        scheduler.scheduleAppointment(apiToken, request);
+
         scheduler.stop(apiToken);
     }
 }
